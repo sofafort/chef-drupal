@@ -1,6 +1,6 @@
 package 'postgresql'
 
-template '/etc/postgresql/9.5/main/pg_hba.conf' do
+template '/etc/postgresql/' + node["postgres"]["version"] + '/main/pg_hba.conf' do
   source 'pg_hba.conf.erb'
   owner 'postgres'
   group 'postgres'

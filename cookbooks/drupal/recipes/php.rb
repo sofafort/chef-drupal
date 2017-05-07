@@ -46,8 +46,15 @@
 #  creates '/usr/local/bin/php-fpm'
 #end
 
-%w{php7.0 php7.0-xml php7.0-pgsql php7.0-gd}.each do |pkg|
-  package pkg
+case node[:platform]
+when 'centos'
+  %w{php7.0 php7.0-xml php7.0-pgsql php7.0-gd}.each do |pkg|
+    package pkg
+  end
+when 'ubuntu'
+  %w{php5 php5-xml php5-pgsql php5-gd}.each do |pkg|
+    package pkg
+  end
 end
 
 #template '/usr/local/php/php.ini' do
