@@ -1,2 +1,3 @@
 #ignore .kitchen directory
 .kitchen
+.vagrant

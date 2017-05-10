@@ -52,7 +52,7 @@ when 'centos'
     package pkg
   end
 when 'ubuntu'
-  %w{php5 php5-xml php5-pgsql php5-gd}.each do |pkg|
+  %w{php5 php5-fpm php5-pgsql php5-gd}.each do |pkg|
     package pkg
   end
 end
