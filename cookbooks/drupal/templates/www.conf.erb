@@ -34,7 +34,11 @@ group = www-data
 <% when 'centos' %>
   listen = /var/run/php/php7.0-fpm.sock
 <% when 'ubuntu' %>
-  listen = /var/run/php/php5-fpm.sock
+  <% if node[:platform_version] == "12.04" %>
+    listen = /run/php/php5-fpm.sock
+  <% else %>
+    listen = /run/php/php7.0-fpm.sock
+  <% end %>
 <% end %>
 
 ; Set listen(2) backlog. A value of '-1' means unlimited.
@@ -46,7 +50,7 @@ group = www-data
 ; BSD-derived systems allow connections regardless of permissions.
 ; Default Values: user and group are set as the running user
 ;                 mode is set to 0660
-;listen.owner = www-data
+listen.owner = www-data
 listen.group = www-data
 listen.mode = 0660
 

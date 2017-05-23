@@ -86,7 +86,11 @@ server {
 			<% when 'centos' %>
 			  fastcgi_pass unix:/var/run/php/php7.0-fpm.sock
 			<% when 'ubuntu' %>
-			  fastcgi_pass unix:/var/run/php/php5-fpm.sock;
+			  <% if node[:platform_version] == "12.04" %>
+			    fastcgi_pass unix:/var/run/php/php5-fpm.sock;
+			  <% else %>
+				  fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+				<% end %>
 			<% end %>
 	}
 

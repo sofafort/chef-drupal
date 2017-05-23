@@ -46,58 +46,57 @@
 #  creates '/usr/local/bin/php-fpm'
 #end
 
-case node[:platform]
-when 'centos'
-  %w{php7.0 php7.0-xml php7.0-pgsql php7.0-gd}.each do |pkg|
-    package pkg
-  end
+#package 'install ubuntu depedencies' do
+#  package_name 'libasprintf0v5'
+#  action :install
+#end
 
-  template '/usr/local/etc/php-fpm.conf' do
-    source 'php-fpm.conf.erb'
-    owner 'root'
-    group 'root'
-    mode 00644
-  end
+directory '/var/run/php' do
+  owner 'www-data'
+  group 'www-data'
+  mode 00775
+  recursive true
+  action :create
+end
 
-  template '/etc/init.d/php-fpm' do
-    source 'init.d.php-fpm.erb'
-    owner 'root'
-    group 'root'
-    mode 00755
-  end
+%w{php7.0 php7.0-xml php7.0-pgsql php7.0-gd php7.0-fpm}.each do |pkg|
+  package pkg
+end
 
-  service 'php-fpm' do
-    action [:enable, :start]
-  end
+#template '/usr/local/etc/php-fpm.conf' do
+#  source 'php-fpm.conf.erb'
+#  owner 'root'
+#  group 'root'
+#  mode 00644
+#end
 
-when 'ubuntu'
-  %w{php5 php5-fpm php5-pgsql php5-gd}.each do |pkg|
-    package pkg
-  end
+#template '/etc/init.d/php-fpm' do
+#  source 'init.d.php-fpm.erb'
+#  owner 'root'
+#  group 'root'
+#  mode 00755
+#end
 
-  template '/etc/php5/fpm/pool.d/www.conf' do
-    source 'www.conf.erb'
-    owner 'root'
-    group 'root'
-    mode 00644
-  end
+template '/etc/php/7.0/fpm/pool.d/www.conf' do
+  source 'www.conf.erb'
+  owner 'root'
+  group 'root'
+  mode 00644
+end
 
-  #template '/etc/init.d/ph5p-fpm' do
+template '/etc/php/7.0/fpm/php.ini' do
+  source 'php.ini.erb'
+  owner 'root'
+  group 'root'
+  mode 00644
+end
+
+service 'php7.0-fpm' do
+  action [:enable, :start]
+end
+    #template '/etc/init.d/ph5p-fpm' do
   #  source 'init.d.php-fpm.erb'
   #  owner 'root'
   #  group 'root'
   #  mode 00755
   #end
-
-  service 'php5-fpm' do
-    action [:enable, :start]
-  end
-
-end
-
-#template '/usr/local/php/php.ini' do
-#  source 'php.ini.erb'
-#  owner 'root'
-#  group 'root'
-#  mode 00644
-#end

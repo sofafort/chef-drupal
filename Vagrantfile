@@ -1,5 +1,6 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "hashicorp/precise64"
+  BOX = ENV.fetch('BOX', 'ubuntu-14.04')
+
 
   config.vm.provider "virtualbox" do |v|
     v.memory = 1024
@@ -17,4 +18,9 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.network "forwarded_port", guest: 80, host: 1800
+
+  config.vm.box = BOX
+  if BOX == 'ubuntu-14.04'
+    config.vm.box_url = 'https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box'
+  end
 end
